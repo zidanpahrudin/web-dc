@@ -1,0 +1,7 @@
+{
+    "MONGO_URI": "mongodb+srv://zidan4:zXwacvVZZqqgasrE@server-apps.tzwcg.mongodb.net/db_discussionCommunity?retryWrites=true&w=majority",
+    "jwt": {
+        "jwtSecret": "secret",
+        "jwtExpired": "16h"
+    }
+}

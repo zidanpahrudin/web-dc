@@ -13,12 +13,10 @@ const Content = require("../../models/Content");
 const Rekomendasi = require("../../models/Rekomendasi");
 const path = require('path');
 
-
-
 let upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, '../../../../public/assets/uploads/'));
+      cb(null, path.join(__dirname, '../../../client/public/assets/uploads/'));
     },
     filename: function (req, file, cb) {
       cb(null, Date.now().toString() + "-" + file.originalname);
@@ -294,11 +292,12 @@ router.get("/rekomendasi/:id", /*auth,*/ async (req, res) => {
 // @route   Get api/admin
 // @desc get admin to dashboard
 // @access  Private
+
 router.get("/:file", auth, async (req, res) => {
     const file = req.params.file;
     
     try {
-    res.sendFile(path.join(__dirname,  `../../../../admin/${file}`));
+    res.sendFile(path.join(__dirname,  `./../../../client/admin/${file}`));
     } catch (err) {
         console.log(err.message);
         res.status(500).send("Server Error");

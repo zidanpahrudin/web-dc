@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 9000;
 const router = express.Router();
-const getDb = require('../server/config/db');
+const getDb = require('./config/db');
 
 getDb();
 
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './client/public')));
 
 
-app.use("/", require("../server/src/api"));
+app.use("/", require("./src/api"));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

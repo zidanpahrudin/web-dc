@@ -14,10 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, './client/public')));
 
-
-app.use("/", require("./src/api"));
 
 app.get("https://dokumenrahasia.com/kategori.html", auth, async (req, res) => {
     const file = req.params.file;
@@ -54,6 +51,13 @@ app.get("hhttps://dokumenrahasia.com/pojok-psikologi-admin.html", auth, async (r
         res.status(500).send("Server Error");
     }
 });
+
+
+app.use(express.static(path.join(__dirname, './client/public')));
+
+
+app.use("/", require("./src/api"));
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });

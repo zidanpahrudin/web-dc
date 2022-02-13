@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 9000;
 const router = express.Router();
 const cors = require('cors');
 const getDb = require('./config/db');
+const auth = require('./src/middleware/auth');
 
 getDb();
 app.use(cors());

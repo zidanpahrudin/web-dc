@@ -162,16 +162,18 @@ async function getContentCerpen() {
     
     let data = response.data.data;
     let content = "";
-    content += `
-    <div class="card h-100" style="border: none;">
-            <img src=${data.src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
-            <div class="card-body">
-              <h2 class="card-title">${data.title}</h2>
-              <small class="text-muted" style="margin-right: 2rem;">Oleh ${data.creator}</small>
-              <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small><br>
-              <a class="btn btn-outline-dark" href="#" role="button" style="margin-top: 1rem;border-radius: 24px;width: 10rem;">Daftar Sekarang</a>
-            </div>
-    `
+    data.forEach(function (item) {
+      content += `
+      <div class="card h-100" style="border: none;">
+              <img src=${item.src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
+              <div class="card-body">
+                <h2 class="card-title">${item.title}</h2>
+                <small class="text-muted" style="margin-right: 2rem;">Oleh ${item.creator}</small>
+                <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small><br>
+                <a class="btn btn-outline-dark" href="#" role="button" style="margin-top: 1rem;border-radius: 24px;width: 10rem;">Daftar Sekarang</a>
+              </div>
+      `
+    });
     if(cerpen) {
       cerpen.innerHTML = content;
     }

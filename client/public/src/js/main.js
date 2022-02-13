@@ -1,7 +1,30 @@
+async function getDetail(obj) {
+    
+  if(obj) {
+    await axios.get(`/api/admin/content/${obj.id}`)
+        .then(function (response) {
+            // handle success
+            localStorage.setItem("id", obj.id);
+            window.location.href = `content.html`;
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+    });
+  }
+}
 
 function handleLink(obj) {
+  obj.preventDefault();
   localStorage.setItem("link_id", obj.id);
 }
+var url = window.location.pathname;
+var filename = url.substring(url.lastIndexOf('/')+1).replace(".html", "");
+if(filename) {
+  localStorage.setItem("link_id", filename);
+}
+
+
 
 let toggler = document.getElementById("toggle");
 function handleToggle() {
@@ -100,10 +123,10 @@ async function getContentLimit() {
   .then(function (response) {
     let data = response.data.data;
     content += `
-    <a href="content.html" style="text-decoration: none;color: black;">
+    <a href="#" id=${data[0]._id} onClick="getDetail(this)" style="text-decoration: none;color: black;">
               <img src=${data[0].src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
               <div class="card-body">
-                <h2 class="card-title">Lorem ipsum dolor sit amet consectetur.</h2>
+                <h2 class="card-title">${data[0].title}</h2>
                 <p class="card-text">${data[0].content}</p>
                 <p class="card-text">
                   <small class="text-muted">Oleh ${data[0].creator}</small><br>
@@ -155,7 +178,7 @@ async function getContentCerpen() {
   let cerpen = document.getElementById("cerpen__content");
   await axios.get(`/api/admin/content?kategori=cerpen`)
   .then(function (response) {
-    console.log(response.data.data);
+    
     let data = response.data.data;
     let content = "";
     content += `
@@ -180,21 +203,7 @@ async function getContentCerpen() {
 }
 getContentCerpen();
 
-async function getDetail(obj) {
-    
-    if(obj) {
-      await axios.get(`/api/admin/content/${obj.id}`)
-          .then(function (response) {
-              // handle success
-              localStorage.setItem("id", obj.id);
-              window.location.href = `content.html`;
-          })
-          .catch(function (error) {
-              // handle error
-              console.log(error);
-      });
-    }
-}
+
 
 function insertAfter(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
@@ -315,17 +324,19 @@ async function detailPage() {
         if(detailContent) {
           detailContent.innerHTML = content;
         }
+        
         let dataTerbaru = "";
         let cardTerbaru = document.getElementById("card__terbaru");
         
         dataTerbaru += ` <h3 style="background-color: #C9ADA7;width: 12rem;border-radius: 24px;text-align: center;">Terbaru</h3>
         <hr style="border: solid black 2px;margin-top: 2rem;margin-bottom: 2rem;">`
-        data[1].forEach(function (item) {
+        
+        data[1].slice(0,5).forEach(function (item) {
               
           dataTerbaru += `
           
           <div class="card mb-4" style="border: none;">
-          <a href="content.html" style="text-decoration: none;color: black;">
+          <a href="#" id=${item._id} onClick="getDetail(this)"  style="text-decoration: none;color: black;">
             <div class="row g-0">
               <div class="col-sm-5">
                 <img src=${item.src_img} class="img-fluid rounded-start" alt="thumbnail">
@@ -334,7 +345,7 @@ async function detailPage() {
                 <div class="card-body">
                   <h5 class="card-title">${item.title}</h5>
                   <p class="card-text">
-                    <small class="text-muted">${item.createdAt}</small>
+                    <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small>
                   </p>
                 </div>
               </div>
@@ -342,8 +353,10 @@ async function detailPage() {
           </a>
         </div>
           `
-          let arr = [].push(dataTerbaru); 
-          console.log(arr.length);
+          
+          
+          
+          
           if(cardTerbaru) {
             cardTerbaru.innerHTML = dataTerbaru;
           }
@@ -464,6 +477,64 @@ async function getAllContent() {
     console.log(error);
   })
 }
+
+// get search content
+async function getSearchContent() {
+  let searchContent = document.getElementById("search");
+  
+  searchContent.addEventListener("keyup", async function () {
+    let search = searchContent.value;
+
+    //let content = document.getElementById("all_content");
+    console.log(search.length);
+    if(search.length > 0 ) {
+      await axios.get('api/admin/search', {params: {search: search}}).then(function (response) {
+        let data = response.data.data;
+        let content = "";
+        // if( document.getElementById("link__nav")) {
+  
+        //   document.getElementById("link__nav").remove();
+  
+        // }
+        
+        
+        data.forEach(function (item) {
+  
+          content += `
+                    <div class="card mb-4 mt-5" style="border: none; ">
+                    <a href="#" id=${item._id} onClick="getDetail(this)" style="text-decoration: none;color: black;">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src=${item.src_img} class="img-fluid rounded-start" alt="thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h2 class="card-title">${item.title}</h2>
+                        <p class="card-text">
+                          <small class="text-muted" style="margin-right: 2rem;">Oleh ${item.creator}</small>
+                          <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+                    `;
+        })
+        
+        
+        if(document.getElementById("content_search")) {
+          document.getElementById("content_search").innerHTML = content;
+        }
+      }).catch(function (error) {
+        console.log(error);
+      })
+    } else {
+      console.log(getContent());
+    }
+  })
+}
+getSearchContent();
 
 getAllContent();
 

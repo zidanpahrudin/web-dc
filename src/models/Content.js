@@ -31,4 +31,6 @@ const ContentSchema = new Schema({
     }
 });
 
+ContentSchema.index({title: 'text', creator: 'text', jenis: 'text'});
+
 module.exports = Content = model('content', ContentSchema);

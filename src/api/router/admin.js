@@ -12,6 +12,7 @@ const Admin = require("../../models/Admin");
 const Content = require("../../models/Content");
 const Rekomendasi = require("../../models/Rekomendasi");
 const path = require('path');
+const console = require('console');
 
 let upload = multer({
   storage: multer.diskStorage({
@@ -285,6 +286,30 @@ router.get("/rekomendasi/:id", /*auth,*/ async (req, res) => {
   }
 });
 
+
+// @route   GET api/admin/search
+// @desc    Get search
+// @access  Public
+router.get("/search", async (req, res) => {
+  let search = req.query.search;
+  //let search = req.body.search;
+  //search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  try {
+    console.log(search);
+    if(search) {
+      Content.find({$or: [{"title": {$regex: search, $options: 'i'}}, {"content": {$regex: search, $options: 'i'}}, {"creator": {$regex: search, $options: "i"}}]}, (err, data) => {
+        if(err) {
+          return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
+        }
+        return res.status(200).json({status: "success", message: "Berhasil mengambil data", data: data});
+      }
+    );
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 
 

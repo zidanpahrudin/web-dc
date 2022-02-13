@@ -61,21 +61,33 @@
             </svg>
           </button>
         </div>
-        <div id="btn__check" class="hide">
+        <div id="btn__check" class="hide" style="margin-top: 2em;">
           
           <form id="form" onsubmit="submitForm()">
-            <input type="text" name="title">
-            <input type="text" name="body">
-            <input type="file" name="photos">
-            <input type="text" name="creator">
-            <select name="category" id="">
-              <option value="liputan">liputan</option>
-              <option value="pojok-psikologi">pojok psikologi</option>
-              <option value="esai">esai</option>
-              <option value="artikel">artikel</option>
-              <option value="cerpen">cerpen</option>
-            </select>
-            <input type="submit" value="kirim">
+            <div id="from-group">
+              <input type="text" name="title" class="form-control" aria-describedby="title" placeholder="title">
+            </div>
+            <div id="from-group mt-4">
+              <textarea type="text" style="resize: vertical; height: 50vh;" name="body" class="form-control" aria-describedby="content" placeholder=""></textarea>
+            </div>
+            <div id="form-group mt-4">
+              <input type="file" name="photos" class="form-control" aria-describedby="photos" placeholder="">
+            </div>
+            <div id="form-group mt-4 mb-10">
+              <input type="text" name="creator" class="form-control" aria-describedby="creator" placeholder="creator">
+            </div>
+            <div id="form-group mt-5">
+              <select name="category" class="form-select" aria-label="jenis kontent">
+                <option selected>jenis konten</option>
+                <option value="liputan">liputan</option>
+                <option value="pojok-psikologi">pojok psikologi</option>
+                <option value="esai">esai</option>
+                <option value="artikel">artikel</option>
+                <option value="cerpen">cerpen</option>
+              </select>
+            </div>
+
+            <input type="submit" class="btn btn-primary mt-4">
           </form>
         </div>
       </div>

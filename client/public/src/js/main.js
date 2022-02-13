@@ -96,25 +96,6 @@ async function getContent() {
 }
 
 // get all content
-async function getAllContent() {
-  let allContent = document.getElementById("all_content");
-  await axios.get(`/api/admin/content?sort=1`)
-    .then(function (response) {
-      // handle success
-      // load data to html
-      let data = response.data.data;
-      let content = "";
-      
-      data.filter(function (item) {
-        content += ``
-      });
-      allContent.innerHTML = content;
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
-}
 
 // get data with limit 
 async function getContentLimit() {
@@ -183,11 +164,11 @@ async function getContentCerpen() {
     let content = "";
     content += `
     <div class="card h-100" style="border: none;">
-            <img src="thumbnail/thumbnail-big1.png" class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
+            <img src=${data.src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
             <div class="card-body">
-              <h2 class="card-title">Lorem ipsum dolor sit.</h2>
-              <small class="text-muted" style="margin-right: 2rem;">Oleh LOREM ID</small>
-              <small class="text-muted">4 Januari 2021</small><br>
+              <h2 class="card-title">${data.title}</h2>
+              <small class="text-muted" style="margin-right: 2rem;">Oleh ${data.creator}</small>
+              <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small><br>
               <a class="btn btn-outline-dark" href="#" role="button" style="margin-top: 1rem;border-radius: 24px;width: 10rem;">Daftar Sekarang</a>
             </div>
     `
@@ -455,14 +436,14 @@ async function getAllContent() {
             <a href="content.html" style="text-decoration: none;color: black;">
               <div class="row g-0">
                 <div class="col-md-4">
-                  <img src="thumbnail/thumbnail-big1.png" class="img-fluid rounded-start" alt="thumbnail">
+                  <img src=${item.src_img} class="img-fluid rounded-start" alt="thumbnail">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h2 class="card-title">Lorem ipsum dolor sit amet.</h2>
+                    <h2 class="card-title">${item.title}</h2>
                     <p class="card-text">
-                      <small class="text-muted" style="margin-right: 2rem;">Oleh LOREM ID</small>
-                      <small class="text-muted">4 Januari 2021</small>
+                      <small class="text-muted" style="margin-right: 2rem;">Oleh ${item.creator}</small>
+                      <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small>
                     </p>
                   </div>
                 </div>

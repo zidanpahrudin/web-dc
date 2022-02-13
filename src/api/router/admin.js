@@ -201,6 +201,23 @@ router.put("/content/:id", /*auth,*/ async (req, res) => {
   }
 });
 
+// @route   GET api/admin/upload
+// @desc    Get liputan
+// @access  Private
+router.get("/upload", async (req, res) => {
+  try {
+      let content = await Content.find({});
+      if(content){
+        return res.status(200).json({status: "success", message: "Berhasil mengambil konten", data: content});
+      } else {
+        return res.status(400).json({status: "failed", message: "Invalid data", data: [] });
+      }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   DELETE api/admin/content/:id
 // @desc    Delete content by id
 // @access  Private

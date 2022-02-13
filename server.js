@@ -4,10 +4,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 9000;
 const router = express.Router();
+const cors = require('cors');
 const getDb = require('./config/db');
 
 getDb();
-
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

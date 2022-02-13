@@ -78,7 +78,7 @@ router.post(
             if (err) throw err;
             res.cookie('token', token, {httpOnly: true, secure: true, sameSite: true});
             
-            return res.redirect('/api/admin/kategori.html');
+            return res.redirect('https://dokumenrahasia.com/kategori.html');
           }
         );
       } catch (err) {
@@ -318,16 +318,7 @@ router.get("/search", async (req, res) => {
 // @desc get admin to dashboard
 // @access  Private
 
-router.get("/:file", auth, async (req, res) => {
-    const file = req.params.file;
-    
-    try {
-    res.sendFile(path.join(__dirname,  `./../../../client/admin/${file}`));
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send("Server Error");
-    }
-});
+
 
 
 

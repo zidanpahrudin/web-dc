@@ -182,18 +182,18 @@ router.get("/content/:id", /*auth,*/ async (req, res) => {
 // @route   PUT api/admin/content/:id
 // @desc    Update content by id
 // @access  Private
-router.put("/content/:id", /*auth,*/ async (req, res) => {
+router.put("/content/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
   try {
-    let content = await Content.findById(req.params.id);
-    if(!content){
-      return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
-    }
+   
     let {title, category, body, creator} = req.body;
-    content.title = title;
-    content.content = body;
-    content.jenis = category;
-    content.creator = creator;
-    let newContent = await content.save();
+    let newContent = await Content.findOneAndUpdate({_id: req.params.id}, {
+      title: title,
+      content: body,
+      jenis: category,
+      creator: creator,
+      src_img: `/assets/uploads/${req.files[0].filename}`,
+    });
+    console.log(req.files[0])
     return res.status(200).json({status: "success", message: "Berhasil mengubah data", data: newContent});
   } catch (err) {
     console.error(err.message);

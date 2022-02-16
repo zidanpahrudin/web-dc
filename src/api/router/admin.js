@@ -223,11 +223,10 @@ router.get("/upload", async (req, res) => {
 // @access  Private
 router.delete("/content/:id", /*auth,*/ async (req, res) => {
   try {
-    let content = await Content.findById(req.params.id);
+    let content = await Content.findByIdAndDelete(req.params.id);
     if(!content){
       return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
     }
-    await content.remove();
     return res.status(200).json({status: "success", message: "Berhasil menghapus data", data: [] });
   } catch (err) {
     console.error(err.message);

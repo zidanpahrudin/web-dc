@@ -313,37 +313,38 @@ async function detailPage() {
         
         dataTerbaru += ` <h3 style="background-color: #C9ADA7;width: 12rem;border-radius: 24px;text-align: center;">Terbaru</h3>
         <hr style="border: solid black 2px;margin-top: 2rem;margin-bottom: 2rem;">`
-        
-        data[1].slice(0,5).forEach(function (item) {
-              
-          dataTerbaru += `
-          
-          <div class="card mb-4" style="border: none;">
-          <a href="#" id=${item._id} onClick="getDetail(this)"  style="text-decoration: none;color: black;">
-            <div class="row g-0">
-              <div class="col-sm-5">
-                <img src=${item.src_img} class="img-fluid rounded-start" alt="thumbnail">
-              </div>
-              <div class="col-sm-7">
-                <div class="card-body">
-                  <h5 class="card-title">${item.title}</h5>
-                  <p class="card-text">
-                    <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small>
-                  </p>
+        if(data[1].data.length > 0) {
+          data[1].slice(0,5).forEach(function (item) {
+                
+            dataTerbaru += `
+            
+            <div class="card mb-4" style="border: none;">
+            <a href="#" id=${item._id} onClick="getDetail(this)"  style="text-decoration: none;color: black;">
+              <div class="row g-0">
+                <div class="col-sm-5">
+                  <img src=${item.src_img} class="img-fluid rounded-start" alt="thumbnail">
+                </div>
+                <div class="col-sm-7">
+                  <div class="card-body">
+                    <h5 class="card-title">${item.title}</h5>
+                    <p class="card-text">
+                      <small class="text-muted">${moment(item.createdAt).utc(7).format('Do MMMM YYYY')}</small>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </div>
-          `
-          
-          
-          
-          
-          if(cardTerbaru) {
-            cardTerbaru.innerHTML = dataTerbaru;
-          }
-        })
+            </a>
+          </div>
+            `
+            
+            
+            
+            
+            if(cardTerbaru) {
+              cardTerbaru.innerHTML = dataTerbaru;
+            }
+          })
+        }
            
         })
 

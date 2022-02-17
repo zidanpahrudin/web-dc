@@ -103,22 +103,24 @@ async function getContentLimit() {
   axios.get(`/api/admin/content?sort=1&limit=1`)
   .then(function (response) {
     let data = response.data.data;
-    content += `
-    <a href="#" id=${data[0]._id} onClick="getDetail(this)" style="text-decoration: none;color: black;">
-              <img src=${data[0].src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
-              <div class="card-body">
-                <h2 class="card-title">${data[0].title}</h2>
-                <p class="card-text">${data[0].content}</p>
-                <p class="card-text">
-                  <small class="text-muted">Oleh ${data[0].creator}</small><br>
-                  <small class="text-muted">${moment(data[0].createdAt).utc(7).format('Do MMMM YYYY')}</small>
-                </p>
-              </div>
-       </a>
-    
-    `
-    if(document.getElementById("terbaru")) {
-      document.getElementById("terbaru").innerHTML = content;
+    if(data[0]){
+      content += `
+      <a href="#" id=${data[0]._id} onClick="getDetail(this)" style="text-decoration: none;color: black;">
+                <img src=${data[0].src_img} class="card-img-top img-fluid" alt="thumbnail" style="width: 250px;display: block;margin: auto;">
+                <div class="card-body">
+                  <h2 class="card-title">${data[0].title}</h2>
+                  <p class="card-text">${data[0].content}</p>
+                  <p class="card-text">
+                    <small class="text-muted">Oleh ${data[0].creator}</small><br>
+                    <small class="text-muted">${moment(data[0].createdAt).utc(7).format('Do MMMM YYYY')}</small>
+                  </p>
+                </div>
+         </a>
+      
+      `
+      if(document.getElementById("terbaru")) {
+        document.getElementById("terbaru").innerHTML = content;
+      }
     }
   }).catch(function (error) {
       // handle error

@@ -11,8 +11,9 @@ const auth = require("../../middleware/auth");
 const Admin = require("../../models/Admin");
 const Content = require("../../models/Content");
 const Rekomendasi = require("../../models/Rekomendasi");
+const Event = require("../../models/Event");
 const path = require('path');
-const console = require('console');
+
 
 let upload = multer({
   storage: multer.diskStorage({
@@ -365,13 +366,111 @@ router.get("/search", async (req, res) => {
 });
 
 
-
-
-// @route   Get api/admin
-// @desc get admin to dashboard
+// @route   POST api/admin/event
+// @desc    Post event
 // @access  Private
+router.post("/event", upload.array('photos', 4), async (req, res) => {
+  const {title, category, body, creator, jenis, link_daftar} = req.body;
+  let event = {};
+  try {
+    event = new Event({
+        title: title,
+        content: body,
+        category: category,
+        creator: creator,
+        jenis: jenis,
+        link_daftar: link_daftar,
+        src_img: `/assets/uploads/${req.files[0].filename}`,
+    });
+    let newEvent = await event.save();
+    if(!newEvent){
+      return res.status(400).json({status: "failed", message: "Invalid data", data: [] });
+    }
+    return res.status(200).json({status: "success", message: "Berhasil menambahkan event", data: newEvent});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/admin/event
+// @desc    Get all event
+// @access  Private
+router.get("/event", async (req, res) => {
+  let sort = req.query.sort;
+  let limit = req.query.limit;
+  let category = req.query.category;
+  let event;
+  try {
+    if(category){
+      event = await Event.find({category: category}).limit(limit).sort(sort);
+    } else {
+      event = await Event.find({}).limit(limit).sort(sort);
+    }
+    return res.status(200).json({status: "success", message: "Berhasil mengambil data", data: event});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/admin/event/:id
+// @desc    Get event by id
+// @access  Private
+router.get("/event/:id", async (req, res) => {
+  try {
+    let event = await Event.findById(req.params.id);
+    if(!event){
+      return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
+    }
+    return res.status(200).json({status: "success", message: "Berhasil mengambil data", data: event});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 
+// @route   PUT api/admin/event/:id
+// @desc    Update event by id
+// @access  Private
+router.post("/event/:id", upload.array('photos', 4), async (req, res) => {
+  try {
+    let {title, category, body, creator, jenis, link_daftar} = req.body;
+    let newEvent = await Event.findOneAndUpdate({_id: req.params.id}, {
+      title: title,
+      content: body,
+      category: category,
+      creator: creator,
+      jenis: jenis,
+      link_daftar: link_daftar,
+      src_img: `/assets/uploads/${req.files[0].filename}`,
+    });
+    if(!newEvent){
+      return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
+    }
+    return res.status(200).json({status: "success", message: "Berhasil mengubah data", data: newEvent});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   DELETE api/admin/event/:id
+// @desc    Delete event by id
+// @access  Private
+router.delete("/event/:id", async (req, res) => {
+  try {
+    let event = await Event.findByIdAndDelete(req.params.id);
+    if(!event){
+      return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
+    }
+    return res.status(200).json({status: "success", message: "Berhasil menghapus data", data: [] });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 
 

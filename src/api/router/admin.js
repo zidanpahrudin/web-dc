@@ -182,7 +182,7 @@ router.get("/content/:id", /*auth,*/ async (req, res) => {
 // @route   PUT api/admin/content/:id
 // @desc    Update content by id
 // @access  Private
-router.put("/content/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
+router.post("/content/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
   try {
    
     let {title, category, body, creator} = req.body;
@@ -305,7 +305,7 @@ router.get("/rekomendasi/:id", /*auth,*/ async (req, res) => {
 // @route   PUT api/admin/rekomendasi/:id
 // @desc    Update rekomendasi by id
 // @access  Private
-router.put("/rekomendasi/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
+router.post("/rekomendasi/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
   try {
     let {title, category, body} = req.body;
     let newRekomendasi = await Rekomendasi.findOneAndUpdate({_id: req.params.id}, {

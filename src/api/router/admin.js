@@ -193,7 +193,7 @@ router.put("/content/:id", upload.array('photos', 4), /*auth,*/ async (req, res)
       creator: creator,
       src_img: `/assets/uploads/${req.files[0].filename}`,
     });
-    console.log(req.files[0])
+    console.log(newContent);
     return res.status(200).json({status: "success", message: "Berhasil mengubah data", data: newContent});
   } catch (err) {
     console.error(err.message);
@@ -301,6 +301,43 @@ router.get("/rekomendasi/:id", /*auth,*/ async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// @route   PUT api/admin/rekomendasi/:id
+// @desc    Update rekomendasi by id
+// @access  Private
+router.put("/rekomendasi/:id", upload.array('photos', 4), /*auth,*/ async (req, res) => {
+  try {
+    let {title, category, body} = req.body;
+    let newRekomendasi = await Rekomendasi.findOneAndUpdate({_id: req.params.id}, {
+      title: title,
+      content: body,
+      category: category,
+      src_img: `/assets/uploads/${req.files[0].filename}`,
+    });
+    console.log(newRekomendasi);
+    return res.status(200).json({status: "success", message: "Berhasil mengubah data", data: newRekomendasi});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   DELETE api/admin/rekomendasi/:id
+// @desc    Delete rekomendasi by id
+// @access  Private
+router.delete("/rekomendasi/:id", /*auth,*/ async (req, res) => {
+  try {
+    let rekomendasi = await Rekomendasi.findByIdAndDelete(req.params.id);
+    if(!rekomendasi){
+      return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
+    }
+    return res.status(200).json({status: "success", message: "Berhasil menghapus data", data: [] });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 
 // @route   GET api/admin/search

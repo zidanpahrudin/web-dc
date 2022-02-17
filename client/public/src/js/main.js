@@ -313,7 +313,7 @@ async function detailPage() {
         
         dataTerbaru += ` <h3 style="background-color: #C9ADA7;width: 12rem;border-radius: 24px;text-align: center;">Terbaru</h3>
         <hr style="border: solid black 2px;margin-top: 2rem;margin-bottom: 2rem;">`
-        if(data[1].data.length > 0) {
+        if(data[1].length > 0) {
           data[1].slice(0,5).forEach(function (item) {
                 
             dataTerbaru += `

@@ -12,6 +12,7 @@ const Admin = require("../../models/Admin");
 const Content = require("../../models/Content");
 const Rekomendasi = require("../../models/Rekomendasi");
 const Event = require("../../models/Event");
+const fs = require("fs");
 const path = require('path');
 
 
@@ -109,9 +110,33 @@ router.get("/logout", async (req, res) => {
 // @desc    Post liputan
 // @access  Private
 router.post("/upload", upload.array('photos', 4), async (req, res) => {
-  
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    fs.unlinkSync(req.files.photos[0].path);
+    return res.status(400).json({ status: "failed", message: "Data ada yang kosong", data: errors.array() });
+  }
+
+  if (req.files.photos !== undefined) {
+    let extfile = path.extname(req.files.photos[0].filename);
+
+    if (extfile !== '.jpeg' && extfile !== '.jpg' && extfile !== '.png') {
+        fs.unlinkSync(req.files.photos[0].path);
+        return res.status(400).json({ status: "failed", message: "Photo E-KTP hanya format .png, .jpg and .jpeg yang diperbolehkan!", data: [] });
+    }
+}
   const {title, category, body, creator} = req.body;
   let content = {};
+  // chekc if photos jpg or png
+  if (req.files) {
+    let photos = [];
+    for (let i = 0; i < req.files.length; i++) {
+      let file = req.files[i];
+      if (file.mimetype.includes("image")) {
+        photos.push(file.filename);
+      }
+    }
+  }
+  
   try {
       content = new Content({
         title: title,

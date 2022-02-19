@@ -160,7 +160,7 @@ router.post("/upload", upload.array('photos', 4), async (req, res) => {
 // @route   GET api/admin/event
 // @desc    Get all event
 // @access  Private
-router.get("/event", /*auth,*/ async (req, res) => {
+router.get("/content", /*auth,*/ async (req, res) => {
   let sort = req.query.sort;
   let limit = req.query.limit;
   let kategori = req.query.kategori;
@@ -181,7 +181,7 @@ router.get("/event", /*auth,*/ async (req, res) => {
 // @route   GET api/admin/content/:id
 // @desc    Get content by id
 // @access  Private
-router.get("/content", /*auth,*/ async (req, res) => {
+router.get("/content/:id", /*auth,*/ async (req, res) => {
   try {
     let data = [];
 

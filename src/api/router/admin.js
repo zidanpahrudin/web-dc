@@ -167,9 +167,9 @@ router.get("/content", /*auth,*/ async (req, res) => {
   let content;
   try {
     if(kategori){
-      content = await Content.find({jenis: kategori}).limit(limit).sort(sort);
+      content = await Content.find({jenis: kategori}).limit(limit).sort({createdAt: sort});
     } else {
-      content = await Content.find({}).limit(limit).sort(sort);
+      content = await Content.find({}).limit(limit).sort({createdAt: sort});
     }
     return res.status(200).json({status: "success", message: "Berhasil mengambil data", data: content});
   } catch (err) {
@@ -177,6 +177,7 @@ router.get("/content", /*auth,*/ async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 // @route   GET api/admin/content/:id
 // @desc    Get content by id

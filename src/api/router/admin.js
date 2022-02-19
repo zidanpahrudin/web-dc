@@ -181,7 +181,7 @@ router.get("/content", /*auth,*/ async (req, res) => {
 // @route   GET api/admin/content/:id
 // @desc    Get content by id
 // @access  Private
-router.get("/content/:id", /*auth,*/ async (req, res) => {
+router.get("/content", /*auth,*/ async (req, res) => {
   try {
     let data = [];
 

@@ -21,7 +21,7 @@ let upload = multer({
       cb(null, path.join(__dirname, '../../../client/public/assets/uploads/'));
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now().toString() + "-" + file.originalname);
+      cb(null, "kontent" + "-" +  Date.now().toString());
     }
   })
 });

@@ -154,14 +154,14 @@ router.get("/content", /*auth,*/ async (req, res) => {
   }
 });
 
-// @route   GET api/admin/content/?id
+// @route   GET api/admin/content/:id
 // @desc    Get content by id
 // @access  Private
-router.get("/content", /*auth,*/ async (req, res) => {
+router.get("/content/:id", /*auth,*/ async (req, res) => {
   try {
     let data = [];
 
-    let content = await Content.findById(req.query.id).limit(req.query);
+    let content = await Content.findById(req.params.id).limit(req.query);
     let sortContent = await Content.find({}).sort({createdAt: 1});
     if(!content && !sortContent){
       return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });

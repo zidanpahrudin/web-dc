@@ -157,10 +157,10 @@ router.post("/upload", upload.array('photos', 4), async (req, res) => {
   }
 });
 
-// @route   GET api/admin/content
-// @desc    Get all content
+// @route   GET api/admin/event
+// @desc    Get all event
 // @access  Private
-router.get("/content", /*auth,*/ async (req, res) => {
+router.get("/event", /*auth,*/ async (req, res) => {
   let sort = req.query.sort;
   let limit = req.query.limit;
   let kategori = req.query.kategori;
@@ -185,9 +185,9 @@ router.get("/content", /*auth,*/ async (req, res) => {
   try {
     let data = [];
 
-    let content = await Content.findById(req.query.id).limit(req.query);
-    let sortContent = await Content.find({}).sort({createdAt: 1});
-    if(!content && !sortContent){
+    let content = await Content.findById(req.params.id);
+    let sortContent = await Content.find({}).sort({createdAt: -1});
+    if(!content || !sortContent){
       return res.status(400).json({status: "failed", message: "Data tidak ditemukan", data: [] });
     }
     if(content) {

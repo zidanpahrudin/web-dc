@@ -132,7 +132,7 @@ getContentLimit();
 async function getContentByKategori() {
   let acara = document.getElementById("acara");
   let content = "";
-  await axios.get(`/api/admin/content?kategori=acara`)
+  await axios.get(`/api/admin/event?kategori=acara`)
   .then(function (response) {
     let data = response.data.data;
     content += `
